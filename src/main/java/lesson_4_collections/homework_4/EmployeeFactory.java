@@ -3,9 +3,14 @@ package lesson_4_collections.homework_4;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EmployeeFactory {
+    private static final AtomicInteger idGenerator;
 
+    static {
+        idGenerator = new AtomicInteger(0);
+    }
 
     private static <T> T getRandom(List<? extends T> items) {
         return items.get(ThreadLocalRandom.current().nextInt(0, items.size()));
@@ -18,15 +23,19 @@ public class EmployeeFactory {
         return String.format("%03d-%03d-%04d", areaCode, centralOfficeCode, lineNumber);
     }
 
-    public static List<Employee> createEmployee(int countEmployee) {
+    public static List<Employee> createEmployees(int countEmployee) {
         List<String> names = List.of("John Doe", "Jane Smith", "Alice Johnson", "Bob Brown",
                 "Charlie Davis", "Dana Alexander", "Robert Valdez", "Laura Johnson");
 
         List<Employee> employees = new ArrayList<>(countEmployee);
         for (int i = 0; i < countEmployee; i++) {
-            Integer work_exp = ThreadLocalRandom.current().nextInt(0, 20);
-            employees.add(new Employee(i, generatePhoneNumber(), getRandom(names), work_exp));
+            Integer workExp = ThreadLocalRandom.current().nextInt(0, 21);
+            employees.add(new Employee(idGenerator.incrementAndGet(), generatePhoneNumber(), getRandom(names), workExp));
         }
         return employees;
+    }
+
+    public static Employee createEmployee(String phoneNumber, String name, Integer workExp) {
+        return new Employee(idGenerator.incrementAndGet(), phoneNumber, name, workExp);
     }
 }

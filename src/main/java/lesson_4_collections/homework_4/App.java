@@ -8,12 +8,17 @@ public class App {
     public static void main(String[] args) {
         final int EMPLOYEE_COUNT = 8;
 
-        List<Employee> employees = EmployeeFactory.createEmployee(EMPLOYEE_COUNT);
+        List<Employee> employees = EmployeeFactory.createEmployees(EMPLOYEE_COUNT);
         employees.forEach(System.out::println);
 
         System.out.println("Самый опытный сотрудник: " + findMostExperiencedEmployee(employees).orElse(null));
         System.out.println("Номер телефона сотрудника \"John Doe\": "
                            + findPhoneNumberByName(employees, "John Doe"));
+        System.out.println("поиск по id 1: " + findEmployeeById(employees, 1));
+
+        //    Добавить метод добавления нового сотрудника в справочник
+        Employee newEmployee = EmployeeFactory.createEmployee("555-123-4567", "New Employee", 10);
+        System.out.println(newEmployee);
     }
 
     // Добавить метод, который ищет сотрудника по стажу (может быть список)
@@ -31,8 +36,10 @@ public class App {
     }
 
 
-//    Добавить метод, который ищет сотрудника по табельному номеру
-//    Добавить метод добавления нового сотрудника в справочник
-
-
+    //    Добавить метод, который ищет сотрудника по табельному номеру
+    static Optional<Employee> findEmployeeById(List<Employee> employees, Integer id) {
+        return employees.stream()
+                .filter(e -> e.id().equals(id))
+                .findFirst();
+    }
 }
