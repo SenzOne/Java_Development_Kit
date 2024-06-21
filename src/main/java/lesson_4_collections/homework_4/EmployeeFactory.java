@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class EmployeeFactory {
+public final class EmployeeFactory {
+
+    private EmployeeFactory() {
+    }
+
     private static final AtomicInteger idGenerator;
 
     static {
